@@ -74,7 +74,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-	Name = "Tp to End(Do this with low speed)",
+	Name = "Tp to (get high speed to fly further",
 	Callback = function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(206, 75, -429)
     wait(.2)
