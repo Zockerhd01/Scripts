@@ -1,0 +1,102 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local playerHead = game.Players.LocalPlayer.Character.Head
+
+local Window = OrionLib:MakeWindow({Name = "1234567#3209", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+local Tab = Window:MakeTab({
+	Name = "Game",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Things"
+})
+
+Tab:AddToggle({
+	Name = "Auto Coins VIP (u dont need VIP just enable it)",
+	Default = false,
+	Callback = function(T1)
+        _G.autocoin = T1
+        while _G.autocoin == true do
+        for i,v in pairs(game:GetService("Workspace").CoinsVIP.Coins:GetDescendants()) do
+            if v.Name == "TouchInterest" and v.Parent then
+                firetouchinterest(playerHead, v.Parent, 0)
+            end
+        end
+        wait()
+        end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Auto Coins Normal World",
+	Default = false,
+	Callback = function(T2)
+        	_G.autocoin2 = T2
+        while _G.autocoin == true do
+        for i,v in pairs(game:GetService("Workspace").Coins.Coins:GetDescendants()) do
+            if v.Name == "TouchInterest" and v.Parent then
+                firetouchinterest(playerHead, v.Parent, 0)
+            end
+        end
+        wait()
+        end
+    end
+})
+
+Tab:AddToggle({
+	Name = "Auto Upgrade Speed",
+	Default = false,
+	Callback = function(T3)
+        _G.speedupgrade = T3
+        while _G.speedupgrade == true do
+            game:GetService("ReplicatedStorage").KnitPackages.Knit.Services.CurrencyService.RF.BuySpeed:InvokeServer()
+        wait()
+        end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Auto Rebirth",
+	Default = false,
+	Callback = function(T4)
+        _G.rebirth = T4
+        while _G.rebirth == true do
+            game:GetService("ReplicatedStorage").KnitPackages.Knit.Services.RebirthService.RF.RequestRebirth:InvokeServer()
+        wait()
+        end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Manual Things"
+})
+
+Tab:AddButton({
+	Name = "Tp to End(Do this with low speed)",
+	Callback = function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(206, 75, -429)
+    wait(.2)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-201240, 67, -439)
+  	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Local Player",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 500,
+	Default = 16,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Speed",
+	Callback = function(S1)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = S1
+	end    
+})
