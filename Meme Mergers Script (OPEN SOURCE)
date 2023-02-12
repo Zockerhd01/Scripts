@@ -1,0 +1,115 @@
+
+local plr = game.Players.LocalPlayer
+local plot = nil
+for i,v in pairs(game:GetService("Workspace").Plots:GetDescendants()) do
+    if v:IsA("ObjectValue") and v.Value == plr then
+        plot = v.Parent.Name
+    end
+end
+
+getgenv().SecureMode = true
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Meme Mergers Script by 1234567#3209",
+   LoadingTitle = "Meme Mergers Script",
+   LoadingSubtitle = "by 1234567#3209",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "SIRIUS", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Sirius Hub",
+      Subtitle = "Key System",
+      Note = "Join the discord (discord.gg/sirius)",
+      FileName = "SiriusKey",
+      SaveKey = true,
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = "Hello"
+   }
+})
+
+local Tab = Window:CreateTab("Game", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Auto Things")
+
+local Toggle = Tab:CreateToggle({
+   Name = "Autoclick best block (re-enable at rebirth)",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(idk)
+        _G.autoclick = idk
+        while _G.autoclick == true do
+        local blocks = game:GetService("Workspace").Plots.Plot1.Merging
+        local highestValue = nil
+        
+        for _, value in pairs(blocks:GetChildren()) do
+            if highestValue == nil then
+                highestValue = value
+            elseif highestValue.Name < value.Name then
+                highestValue = value
+            end
+        end
+        
+        local args = {
+            [1] = workspace:WaitForChild("Plots"):WaitForChild(plot):WaitForChild("Merging"):WaitForChild(highestValue.Name)
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ClickBlock"):FireServer(unpack(args))
+        wait(0.1)
+        end
+   end,
+})
+
+local Section = Tab:CreateSection("Obby")
+
+local Button = Tab:CreateButton({
+   Name = "Complete Easy Obby",
+   Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Obbies.Easy.Win.CFrame
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Complete Hard Obby",
+   Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Obbies.Hard.Win.CFrame
+   end,
+})
+
+local Tab = Window:CreateTab("Player", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("WalkSpeed")
+
+local Slider = Tab:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {16, 100},
+   Increment = 1,
+   Suffix = "WalkSpeed",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Walk)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Walk
+   end,
+})
+
+local Section = Tab:CreateSection("JumpHeight")
+
+local Slider = Tab:CreateSlider({
+   Name = "JumpHeight",
+   Range = {7.5, 100},
+   Increment = 0.5,
+   Suffix = "JumpHeight",
+   CurrentValue = 16,
+   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Jump)
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = Jump
+   end,
+})
