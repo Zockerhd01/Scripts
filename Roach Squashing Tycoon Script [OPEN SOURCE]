@@ -1,0 +1,126 @@
+
+local plr = game.Players.LocalPlayer
+local plot = nil
+
+for i,v in pairs(game:GetService("Workspace").Plots:GetDescendants()) do
+    if v.Name == "Player" and v:IsA("ObjectValue") and v.Value == plr then
+        plot = v.Parent.Parent.Name
+    end
+end
+
+getgenv().SecureMode = true
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Roach Squashing Tycoon Script by 1234567#3209",
+   LoadingTitle = "Roach Squashing Tycoon Script",
+   LoadingSubtitle = "by 1234567#3209",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "SIRIUS", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Sirius Hub",
+      Subtitle = "Key System",
+      Note = "Join the discord (discord.gg/sirius)",
+      FileName = "SiriusKey",
+      SaveKey = true,
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = "Hello"
+   }
+})
+
+local Tab = Window:CreateTab("Game", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Auto Things")
+
+local Toggle = Tab:CreateToggle({
+   Name = "Auto Collect",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(idk)
+       _G.autocollect = idk
+        while _G.autocollect == true do
+            for i,v in pairs(game:GetService("Workspace").Plots[plot].Roaches:GetDescendants()) do 
+                if v:IsA("Part") then
+                    v.CFrame = plr.Character.HumanoidRootPart.CFrame
+                end
+            end
+            wait(0.1)
+        end
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Auto Squash",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(idk)
+       _G.autosquash = idk
+        while _G.autosquash == true do
+            for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Main.LeftContainer.Held:GetChildren()) do
+                if v:IsA("TextLabel") then
+                    if v.Visible == true then
+                        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Upload"):FireServer()
+                    end
+                end
+            end
+            wait(0.1)
+        end
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Auto Obby",
+   CurrentValue = false,
+   Flag = "Toggle3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(idk)
+        _G.autoobby = idk
+        while _G.autoobby == true do
+            local obbyblock = game:GetService("Workspace"):FindFirstChild("ObbyBlocker")
+        
+            if not obbyblock then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").ObbyFinish.TouchPart.CFrame
+            end
+        wait(0.1)
+        end
+   end,
+})
+
+
+local Tab = Window:CreateTab("Player", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("WalkSpeed")
+
+local Slider = Tab:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {16, 100},
+   Increment = 1,
+   Suffix = "WalkSpeed",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Walk)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Walk
+   end,
+})
+
+local Section = Tab:CreateSection("JumpHeight")
+
+local Slider = Tab:CreateSlider({
+   Name = "JumpHeight",
+   Range = {7.5, 100},
+   Increment = 0.5,
+   Suffix = "JumpHeight",
+   CurrentValue = 7.5,
+   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Jump)
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = Jump
+   end,
+})
