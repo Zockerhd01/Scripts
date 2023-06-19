@@ -2,6 +2,13 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local cooldown = nil
 local rings = workspace.Game.Rings
+local capsulepath = game:GetService("ReplicatedStorage").GameObjects.Capsules
+local capsules = {}  -- Table to store the names of the capsules
+local selectedcapsule = nil
+
+for _, capsule in ipairs(capsulepath:GetChildren()) do
+    table.insert(capsules, capsule.Name)
+end
 
 local Window = Rayfield:CreateWindow({
    Name = "Hoop Simulator",
@@ -29,7 +36,7 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local Tab = Window:CreateTab("Game", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Utils", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Auto Farm")
 
@@ -62,7 +69,7 @@ local Toggle = Tab:CreateToggle({
 local Toggle = Tab:CreateToggle({
    Name = "Auto Rings (AutoFarm needs to be on)",
    CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Toogle2)
 
         _G.ring = Toogle2
@@ -74,6 +81,33 @@ local Toggle = Tab:CreateToggle({
                 end
             end
         wait(0.1)
+        end
+
+   end,
+})
+
+local Tab = Window:CreateTab("Capsules", 3610237066) -- Title, Image
+
+local Dropdown = Tab:CreateDropdown({
+   Name = "Capsule to Hatch",
+   Options = capsules,
+   CurrentOption = {"spawn"},
+   MultipleOptions = false,
+   Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Option)
+        selectedcapsule = unpack(Option)
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Auto Hatch Capsule (3)",
+   CurrentValue = false,
+   Flag = "Toggle3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Toogle3)
+        _G.autoopen = Toogle3
+        while _G.autoopen == true do
+            game:GetService("ReplicatedStorage"):WaitForChild("events-shared/core/events.module@GlobalEvents"):WaitForChild("hatchCapsule"):FireServer(selectedcapsule, true)
+        wait(5)
         end
 
    end,
